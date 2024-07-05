@@ -1,2 +1,3 @@
 import Button from "./src/Button/main.js";
-document.body.appendChild(Button());
+
+Button(`[{ "container": "test1"}, {"variant":"filled"}, {"color": "blue"}, {"size": "l"}, {"text":"按钮"}]`);

@@ -4,9 +4,7 @@
   "description": "common UI design",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && postcss tailwind.css -o output.css",
-    "watch": "tsc-watch --onSuccess 'npm run build'"
+    "build": "tsc && npx tailwindcss -i ./tailwind.css -o ./output.css"
   },
   "author": "SHRmsks",
   "license": "MIT",

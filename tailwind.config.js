@@ -3,20 +3,26 @@ module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    fontsize: {
-      s: "12px",
-      m: "14px",
-      l: "16px",
+    fontSize: {
+      btn_s: "12px",
+      btn_m: "14px",
+      btn_l: "16px",
+    },
+    fontWeight: {
+      btn_weight: "400",
     },
     height: {
-      s: "24px",
-      m: "32px",
-      l: "40px",
+      btn_s: "24px",
+      btn_m: "32px",
+      btn_l: "40px",
     },
     width: {
-      s: "28px",
-      m: "46px",
-      l: "64px",
+      btn_s: "64px",
+      btn_m: "88px",
+      btn_l: "112px",
+    },
+    fontFamily: {
+      btn: "PingFangSC",
     },
   },
   variants: {
