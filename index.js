@@ -1,2 +1,2 @@
-import Button from "./Button/main.js";
+import Button from "./src/Button/main.js";
 document.body.appendChild(Button());
