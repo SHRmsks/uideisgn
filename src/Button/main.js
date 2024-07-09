@@ -13,8 +13,8 @@ function Button(configs) {
     color = null,
     size = null,
     disabled = null,
-    text = null;
-
+    text = null,
+    icon = null;
   attributes.container !== undefined ? (container = attributes.container) : (container = undefined);
   console.log(attributes.container);
 
@@ -26,8 +26,10 @@ function Button(configs) {
 
   attributes.disabled !== undefined ? (disabled = attributes.disabled) : (disabled = undefined);
   attributes.text !== undefined ? (text = attributes.text) : (text = undefined);
+  attributes.icon !== (undefined || null) ? (icon = attributes.icon) : (icon = undefined);
   console.log(attributes.text);
-  const mainbutton = new mainButton(vari, color, size, disabled, text).create();
+  console.log(attributes.icon);
+  const mainbutton = new mainButton(vari, color, size, disabled, icon, text).create();
   const domid = document.getElementById(container);
   console.log(domid === null);
   console.log(typeof mainbutton);

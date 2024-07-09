@@ -1,59 +1,140 @@
+const btn_add = "/public/icon/btn_add.png";
+const btn_expd = "/public/icon/btn_expd.png"; // icon's path
 class mainButton {
     setText(text) {
         this.text = text;
         return true;
-    }
+    } //setter for text
     getText() {
         return this.text;
+    } //getter for text
+    setIcon(iconName) {
+        if (iconName === "add") {
+            this.icon = btn_add; // the icon's path
+            return true;
+        }
+        if (iconName === "expand") {
+            this.icon = btn_expd;
+            return true;
+        }
+        else {
+            return null; // else we returned null
+        }
     }
-    constructor(variant, colors, sizes, disabled, text) {
+    getIcon() {
+        return this.icon; // return should be the path
+    }
+    constructor(variant, colors, sizes, disabled, icon, text) {
         this.text = "";
         this.variant = variant;
         this.color = colors;
         this.size = sizes;
         this.disabled = disabled;
         this.setText(text);
+        this.setIcon(icon);
     }
     getDetails() {
-        return `Button variant: ${this.variant}, Color: ${this.color}, Size: ${this.size}, Disabled: ${this.disabled}, Text: ${this.getText()}`;
+        console.log(this.variant, this.size, this.color, this.disabled, this.getIcon(), this.getText());
+        return `Button variant: ${this.variant}, Color: ${this.color}, Size: ${this.size}, Disabled: ${this.disabled}, Text: ${this.getText()}, Icon:${this.getIcon()}`;
     }
     create() {
         const button = document.createElement("button");
-        button.textContent = this.getText();
-        button.className = `${this.getTailwindClasses()}`;
+        const icon = document.createElement("img");
+        const wrapper = document.createElement("div");
+        const wrapperforicon = document.createElement("div");
+        button.className = `flex justify-center items-center content-center ${this.getTailwindClasses()}`;
+        wrapper.className = "flex min-h-[20px] flex-row gap-x-[6px] content-center"; // wrapper for the text and icon,
+        wrapperforicon.className = "w-6 h-6 content-center";
+        const iconPath = this.getIcon();
+        const text = this.getText();
+        if (iconPath) {
+            // if not null
+            icon.src = iconPath;
+            icon.alt = iconPath === btn_add ? "add" : iconPath === btn_expd ? "expand" : "icon";
+            wrapperforicon.appendChild(icon);
+            wrapper.appendChild(wrapperforicon);
+        }
+        wrapper.appendChild(document.createTextNode(text));
+        button.appendChild(wrapper);
         return button;
     }
     getTailwindClasses() {
         const variantClasses = this.getVariant();
-        const colorClasses = this.getColor();
         const sizeClasses = this.getSize();
-        return `${variantClasses} ${colorClasses} ${sizeClasses}`;
-    }
-    getVariant() {
-        switch (this.variant) {
-            case "filled":
-                return "bg-gradient-to-r from-[#4090FF] to-[#0279F3] text-center text-[#FFFFFF] font-btn_weight rounded-[4px] font-btn";
-            case "vacant":
-                return "bg-[#241111] text-center text-[#0872DC] outline-1 outline-[#0872DC] font-btn_weight rounded-[4px] font-btn";
-            case "dead":
-                return "bg-[#FFFFFF]] text-center text-[#48494a] outline-1 outline-[#48494a] font-btn_weight rounded-[4px] font-btn";
-            case "text":
-                return "bg-transparent outline-none text-center text-[#0872DC] font-btn_weight rounded-[4px] font-btn";
-            default:
-                return "bg-gradient-to-r from-[#4090FF] to-[#0279F3] text-center text-[#FFFFFF] font-btn_weight rounded-[4px] font-btn";
-        }
+        return `${variantClasses} ${sizeClasses}`;
     }
     getColor() {
+        // the color converted should be a string xxx-xxx
+        if (this.color && typeof this.color === "string" && this.color !== "blue" && this.color !== "grey" && this.color !== "red") {
+            let array = [];
+            if (this.color.includes("-")) {
+                array = this.color.split("-");
+            }
+            else
+                array.push(this.color);
+            if (array.length > 1) {
+                return JSON.stringify([{ first: array[0] }, { last: array[1] }]);
+            }
+            else {
+                return JSON.stringify([{ first: array[0] }, { last: array[0] }]);
+            }
+        }
+        // first if will return the json typed of string
         switch (this.color) {
             case "blue":
-                return "bg-[#241111]";
-            case "yellow":
-                return "bg-gradient-to-r from-[#4090FF] to-[#0279F3]";
-            case "green":
-                return "bg-gradient-to-r from-[#4090FF] to-[#0279F3]";
+                return JSON.stringify([{ first: "#4090FF" }, { last: "#0279F3" }]);
+            case "grey":
+                return JSON.stringify([{ first: "#F3F4F6" }, { last: "#F3F4F6" }]);
+            case "red":
+                return JSON.stringify([{ first: "#F7525F" }, { last: "#F7525F" }]);
             default:
-                return "bg-[#241111]";
+                return JSON.stringify([{ first: "#4090FF" }, { last: "#0279F3" }]);
         }
+    }
+    getVariant() {
+        // you have to have color before you call variant
+        if (this.color) {
+            let first; //from color
+            let textfirst; // text color
+            let outlinefirst; // outline color
+            let last; // to color
+            const color = this.getColor();
+            console.log(color); // Better visibility for debugging
+            const array = JSON.parse(color);
+            console.log(JSON.stringify(array[0].first)); // Better visibility for debugging
+            if (array.length > 1) {
+                first = `from-[${array[0].first}]`;
+                console.log(first);
+                last = `to-[${array[1].last}]`;
+                textfirst = `text-[${array[0].first}]`;
+                outlinefirst = `outline outline-1 outline-[${array[0].first}]`;
+            }
+            else {
+                first = `from-[${array[0].first}]`;
+                console.log(first);
+                last = `to-[${array[1].last}]`;
+                textfirst = `text-[${array[0].first}]`;
+                outlinefirst = `outline outline-1 outline-[${array[0].first}]`;
+            }
+            switch (this.variant) {
+                case "filled":
+                    return `bg-gradient-to-r ${first} ${last} text-center text-[#ffffff] font-btn_weight  font-btn`;
+                case "vacant":
+                    return `bg-[#ffffff] text-center ${textfirst} ${outlinefirst} font-btn_weight  font-btn`;
+                case "dead":
+                    return "bg-[#ffffff] text-center text-[#485467] outline outline-1 outline-[#dadfe6] font-btn_weight  font-btn";
+                case "text":
+                    return `bg-transparent outline-none text-center ${textfirst} font-btn_weight  font-btn`;
+                case "error":
+                    return "bg-[#f7525f] text-center text-[#ffffff] font-btn_weight  font-btn";
+                case "error-vacant":
+                    return "bg-[#ffffff] text-center text-[#f7525f] outline outline-1 outline-[#f7525F] font-btn_weight  font-btn";
+                default:
+                    return "bg-gradient-to-r from-[#4090ff] to-[#0279f3] text-center text-[#FFFFFF] font-btn_weight  font-btn";
+            }
+        }
+        else
+            return "";
     }
     getSize() {
         switch (this.size) {

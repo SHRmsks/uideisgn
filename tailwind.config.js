@@ -1,8 +1,10 @@
 module.exports = {
-  content: ["./src/**/*.{html,js,ts,jsx,tsx},, './demo.html', './Button/**/*.js'"],
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  darkMode: false, // or 'media' or 'class'
+  important: true,
+  content: ["./demo.html", "./src/Button/mainButton.js", "./index.js"],
   theme: {
+    colors: {
+      blue: "#4090FF",
+    },
     fontSize: {
       btn_s: "12px",
       btn_m: "14px",
@@ -24,9 +26,6 @@ module.exports = {
     fontFamily: {
       btn: "PingFangSC",
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [],
 };
